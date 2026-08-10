@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shoebox — a second brain for your physical life</title>
+<meta name="description" content="Local-first document archive for macOS. Scan anything; Shoebox reads it, files it into an Obsidian vault, and answers questions with real citations.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<style>
+  :root {
+    --bg: #fbfaf8;
+    --panel: #ffffff;
+    --ink: #17150f;
+    --ink-soft: #5c574c;
+    --ink-faint: #8b8579;
+    --line: #e6e1d7;
+    --accent: #a4531f;
+    --accent-soft: #f4ece2;
+    --shadow: 0 1px 2px rgba(23,21,15,.05), 0 8px 24px rgba(23,21,15,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14130f;
+      --panel: #1c1a15;
+      --ink: #f2eee4;
+      --ink-soft: #b3ab99;
+      --ink-faint: #8a8271;
+      --line: #2e2b23;
+      --accent: #e0904f;
+      --accent-soft: #2a2119;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14130f;
+    --panel: #1c1a15;
+    --ink: #f2eee4;
+    --ink-soft: #b3ab99;
+    --ink-faint: #8a8271;
+    --line: #2e2b23;
+    --accent: #e0904f;
+    --accent-soft: #2a2119;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem; }
+  a { color: var(--accent); }
+
+  /* ---- hero ---- */
+  header { padding: 5.5rem 0 3.5rem; }
+  .mark {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 2.25rem;
+  }
+  .mark span:first-child { font-size: 1.1rem; }
+  h1 {
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.08; letter-spacing: -.028em;
+    margin: 0 0 1.15rem; font-weight: 640; max-width: 17ch;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    color: var(--ink-soft); margin: 0 0 2.5rem; max-width: 54ch;
+  }
+
+  .cta { display: flex; flex-wrap: wrap; gap: .85rem 1.25rem; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: .6rem;
+    background: var(--accent); color: #fff; text-decoration: none;
+    padding: .8rem 1.5rem; border-radius: .6rem;
+    font-weight: 600; font-size: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .btn:hover { filter: brightness(1.07); }
+  .cta-meta { font-size: .9rem; color: var(--ink-faint); }
+  .cta-meta code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .85em; color: var(--ink-soft);
+  }
+
+  /* ---- sections ---- */
+  section { padding: 3.5rem 0; border-top: 1px solid var(--line); }
+  h2 {
+    font-size: .82rem; font-weight: 600; letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 1.9rem;
+  }
+  h3 { font-size: 1.05rem; margin: 0 0 .45rem; font-weight: 620; letter-spacing: -.008em; }
+  p { margin: 0 0 1rem; }
+  section p:last-child { margin-bottom: 0; }
+
+  .steps { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); counter-reset: s; }
+  .step { counter-increment: s; }
+  .step::before {
+    content: counter(s);
+    display: flex; align-items: center; justify-content: center;
+    width: 1.9rem; height: 1.9rem; margin-bottom: .85rem;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 50%; font-size: .85rem; font-weight: 700;
+  }
+  .step p { color: var(--ink-soft); font-size: .95rem; margin: 0; }
+
+  .cards { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: .75rem; padding: 1.4rem;
+  }
+  .card p { color: var(--ink-soft); font-size: .94rem; margin: 0; }
+
+  .rules { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.05rem; max-width: 46rem; }
+  .rules li { padding-left: 1.6rem; position: relative; color: var(--ink-soft); }
+  .rules li::before {
+    content: ""; position: absolute; left: 0; top: .62em;
+    width: .45rem; height: .45rem; border-radius: 50%; background: var(--accent);
+  }
+  .rules strong { color: var(--ink); font-weight: 620; }
+
+  table { border-collapse: collapse; width: 100%; font-size: .94rem; }
+  .scroller { overflow-x: auto; }
+  th, td { text-align: left; padding: .7rem 1.25rem .7rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+  td { color: var(--ink-soft); }
+  td code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .88em; background: var(--accent-soft); color: var(--accent);
+    padding: .1rem .38rem; border-radius: .25rem;
+  }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 2.5rem 0 4rem;
+    color: var(--ink-faint); font-size: .88rem;
+  }
+  footer p { margin: 0 0 .5rem; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="mark"><span>📦</span><span>Shoebox</span></div>
+    <h1>A second brain for your physical life.</h1>
+    <p class="lede">
+      Scan a bill, a letter, a medical record, a certificate. Shoebox reads it, works out
+      what it is, files it into an archive you own, and lets you ask questions about any
+      of it — with the actual document cited back to you.
+    </p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/dennisonbertram/shoebox-releases/releases/latest">
+        Download for macOS
+      </a>
+      <span class="cta-meta">
+        Apple silicon · signed &amp; notarized · <code>2026.8.10</code>
+      </span>
+    </div>
+  </header>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>Drop it in</h3>
+        <p>Point your scanner at a watched folder, or drag files into the app. Shoebox picks them up on its own.</p>
+      </div>
+      <div class="step">
+        <h3>It reads</h3>
+        <p>Several OCR engines run over each page — including Apple's own Vision engine, on your Mac — and their results are fused.</p>
+      </div>
+      <div class="step">
+        <h3>It files</h3>
+        <p>Each document is sorted into an organized folder tree that doubles as an Obsidian vault, with a companion note.</p>
+      </div>
+      <div class="step">
+        <h3>You ask</h3>
+        <p>Search across everything, or just ask — like "what do I have to respond to?" Answers cite the documents they came from.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>What you get</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>An archive, not a silo</h3>
+        <p>Your documents stay as ordinary files in ordinary folders. The archive is a standard Obsidian vault — open it in Obsidian, Finder, or anything else.</p>
+      </div>
+      <div class="card">
+        <h3>Search that understands</h3>
+        <p>Hybrid search combines meaning-based and keyword matching, so both "that insurance thing from March" and an exact policy number find the same page.</p>
+      </div>
+      <div class="card">
+        <h3>Chat with citations</h3>
+        <p>Ask questions in plain language. Every answer points back at the source document, so you can check it yourself.</p>
+      </div>
+      <div class="card">
+        <h3>A review queue</h3>
+        <p>When Shoebox isn't confident about a document, it puts it in front of you instead of guessing and filing it wrong.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where your data lives</h2>
+    <ul class="rules">
+      <li><strong>On your Mac.</strong> Documents, the search index, and the database all stay local. There is no Shoebox account and no Shoebox server.</li>
+      <li><strong>Originals are never touched.</strong> Files are never overwritten or deleted. Every move is recorded and can be undone.</li>
+      <li><strong>Nothing is invented.</strong> When a field can't be read, it's left empty rather than guessed at.</li>
+      <li><strong>The cloud is used for one thing.</strong> Understanding a document calls a language model through OpenRouter, using a key you enter yourself in Settings. That's the only part that leaves your machine.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Requirements</h2>
+    <div class="scroller">
+      <table>
+        <tr>
+          <th>macOS</th>
+          <td>Apple silicon (M-series). No Intel build is published.</td>
+        </tr>
+        <tr>
+          <th>Signing</th>
+          <td>Signed with a Developer ID and notarized by Apple, so it opens without security warnings.</td>
+        </tr>
+        <tr>
+          <th>Model access</th>
+          <td>An <a href="https://openrouter.ai">OpenRouter</a> API key, entered in Settings on first run. Shoebox does not ship with one.</td>
+        </tr>
+        <tr>
+          <th>Updates</th>
+          <td>Built in. Shoebox checks for new versions and updates itself.</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Installing</h2>
+    <p>
+      Download the <code>.zip</code>, unzip it, and drag <strong>Shoebox.app</strong> into your
+      Applications folder. Open it and follow the setup, which will ask for your OpenRouter key
+      and where you'd like your archive to live.
+    </p>
+  </section>
+
+  <footer>
+    <p>Shoebox is in active development. This page tracks the latest published build.</p>
+    <p><a href="https://github.com/dennisonbertram/shoebox-releases/releases">All releases</a></p>
+  </footer>
+
+</div>
+
+</body>
+</html>
