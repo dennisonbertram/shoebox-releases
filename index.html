@@ -1,5 +1,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Scan a bill, a letter, a medical record. Shoebox reads every page, files it where it belongs, and answers your questions with the document it came from. A local-first Mac app.">
+<link rel="canonical" href="https://dennisonbertram.github.io/shoebox-releases/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Shoebox">
+<meta property="og:url" content="https://dennisonbertram.github.io/shoebox-releases/">
+<meta property="og:title" content="Shoebox — a second brain for the paper in your life">
+<meta property="og:description" content="Scan a bill, a letter, a medical record. Shoebox reads every page, files it where it belongs, and answers your questions with the document it came from. A local-first Mac app.">
+<meta property="og:image" content="https://dennisonbertram.github.io/shoebox-releases/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Shoebox landing page: an illustrated desk scene with the app answering a question about a passport.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shoebox — a second brain for the paper in your life">
+<meta name="twitter:description" content="Scan a bill, a letter, a medical record. Shoebox reads every page, files it where it belongs, and answers your questions with the document it came from. A local-first Mac app.">
+<meta name="twitter:image" content="https://dennisonbertram.github.io/shoebox-releases/og-image.jpg">
 <title>Shoebox — a second brain for the paper in your life</title>
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
@@ -936,7 +951,12 @@
 /* --- accessibility fixes (touch-target minimums, added in QA) --- */
 .a-main { min-width: 0; }
 .topbar .signup { min-height: 44px; display: inline-flex; align-items: center; }
-.foot__inner a { display: inline-block; padding-block: 10px; }
+.foot__inner a { display: inline-block; padding-block: 11px; }
+/* The topbar nav is visible from 900px up, which includes touch tablets
+   (iPad landscape is 1024px wide), so these need the 44px minimum too.
+   The bar is a centred flex row and the adjacent button is already 44px,
+   so taller links change no positions. */
+.topbar nav a { display: inline-flex; align-items: center; min-height: 44px; }
 </style>
 
 <div class="page">
@@ -1488,12 +1508,12 @@
         ><a href="https://github.com/dennisonbertram/shoebox-releases/releases/latest">Download</a>
       </nav>
       <p class="foot__note">
-        Concept landing page for Shoebox, a local-first second brain for the paper in your life. The
-        scenes are hand-painted illustrations generated for this mock; the app panels mirror the
-        real interface (rail, chat, “Documents I looked at” citations, the real filing areas) but
-        are static approximations. Email-attachment capture is on the roadmap, not shipping yet. One
-        warm, sunlit world on purpose — a painted golden-hour scene has no sensible dark-mode twin,
-        so there’s no dark theme here by design.
+        Shoebox is a local-first second brain for the paper in your life. The scenes on this page
+        are hand-painted illustrations; the app panels mirror the real interface (rail, chat,
+        “Documents I looked at” citations, the real filing areas) but are static approximations,
+        not screenshots. Email-attachment capture is on the roadmap, not shipping yet. One warm,
+        sunlit world on purpose — a painted golden-hour scene has no sensible dark-mode twin, so
+        there’s no dark theme here by design.
       </p>
     </div>
   </footer>
