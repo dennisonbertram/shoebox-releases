@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- shoebox mark (issue #198); canonical values: apps/electron/scripts/make-icon.mjs -->
+  <rect x="48" y="48" width="928" height="928" rx="204" fill="#171717"/>
+  <path d="M 318 640 C 394 546, 486 372, 526 292 C 552 240, 620 232, 624 294 C 628 356, 550 516, 484 610 C 442 670, 400 724, 358 706 C 318 688, 350 610, 436 630 C 512 648, 574 684, 672 672" fill="none" stroke="#fafafa" stroke-width="52" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="734" cy="664" r="33" fill="#fafafa"/>
+</svg>
