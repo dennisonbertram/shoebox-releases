@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shoebox — a second brain for the paper in your life</title>
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <style>
@@ -221,7 +223,7 @@
     background: linear-gradient(90deg, var(--hair), transparent);
     max-width: 120px;
   }
-  h2.head {
+  .head {
     font-family: var(--serif);
     font-weight: 400;
     font-size: clamp(2.1rem, 4.7vw, 3.7rem);
@@ -231,7 +233,7 @@
     margin: 0 0 0.5em;
     color: #362819;
   }
-  h2.head em {
+  .head em {
     font-style: italic;
   }
   .lede {
@@ -930,6 +932,11 @@
       grid-template-columns: 1fr;
     }
   }
+
+/* --- accessibility fixes (touch-target minimums, added in QA) --- */
+.a-main { min-width: 0; }
+.topbar .signup { min-height: 44px; display: inline-flex; align-items: center; }
+.foot__inner a { display: inline-block; padding-block: 10px; }
 </style>
 
 <div class="page">
@@ -961,7 +968,7 @@
         <div class="kicker">
           <span class="eyebrow">A second brain for paper</span><span class="rule"></span>
         </div>
-        <h2 class="head">Every document<br />in one <em>box</em>.</h2>
+        <h1 class="head">Every document<br />in one <em>box</em>.</h1>
         <p class="lede">
           Scan the paper, drop in the files, point it at your inbox folder. Shoebox reads every
           page, files it where it belongs, and remembers — so you just ask.
